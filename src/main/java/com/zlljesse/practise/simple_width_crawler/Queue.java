@@ -47,4 +47,12 @@ public class Queue {
     public void empty(){
         this.queue.clear();
     }
+
+    /**
+     * 获取队列大小
+     * @return
+     */
+    public int getQueueSize(){
+        return this.queue.size();
+    }
 }
