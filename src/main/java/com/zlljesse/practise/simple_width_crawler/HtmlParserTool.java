@@ -22,10 +22,10 @@ public class HtmlParserTool {
      * @param url
      * @return
      */
-    public static Set<String> extractLinks(String url){
+    public static Set<String> extractLinks(String url,LinkFilter filter){
         Set<String> links = new HashSet<String>();
         try {
-            Parser parser = new Parser();
+            Parser parser = new Parser(url);
             parser.setEncoding("gb2312");
             //过来frame标签的filter,用来获取frame的src
             NodeFilter frameFilter = new NodeFilter() {
@@ -46,7 +46,11 @@ public class HtmlParserTool {
                 if(tag instanceof LinkTag){//<a>标签
                     LinkTag link = (LinkTag) tag;
                     String linkUrl = link.getLink(); //URL
-                    links.add(linkUrl);
+                    //过滤url
+                    if(filter.accept(linkUrl)){
+                        links.add(linkUrl);
+                    }
+
                 }else {//<frame>标签
                     String  frame = tag.getText();
                     int start = frame.indexOf("src=");
@@ -56,7 +60,10 @@ public class HtmlParserTool {
                         end = frame.indexOf(">");
                     }
                     String frameUrl = frame.substring(5,end -1);
-                    links.add(frameUrl);
+                    //过滤url
+                    if(filter.accept(frameUrl)){
+                        links.add(frameUrl);
+                    }
                 }
             }
 

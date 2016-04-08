@@ -40,14 +40,21 @@ public class DownloadFile {
      * @param data
      * @param filePath
      */
-    private void saveToLocal(byte[] data,String filePath){
+    public void saveToLocal(byte[] data,String filePath,String filename){
         OutputStream out = null;
         try {
-            File file = new File(filePath);
+            File file = new File(filename);
+            File path = new File(filePath);
+            System.out.println(filePath+filename);
+            if(!path.exists()){
+                path.mkdirs();
+            }
             if(!file.exists()){
                 file.createNewFile();
             }
-            out =  new FileOutputStream(file);
+
+
+            out =  new FileOutputStream(new File(filePath+filename));
             for (int i = 0; i < data.length; i++) {
                 out.write(data[i]);
             }
@@ -89,8 +96,8 @@ public class DownloadFile {
             }
             HttpEntity httpEntity = response.getEntity();
             Header[] headers = response.getAllHeaders();
-            filePath = "E:\\test\\"+getFileName(url,httpEntity.getContentType().getValue());
-            saveToLocal(EntityUtils.toByteArray(httpEntity),filePath);
+            filePath = "E:\\test\\";
+            saveToLocal(EntityUtils.toByteArray(httpEntity),filePath,getFileName(url,httpEntity.getContentType().getValue()));
         }catch (IOException e){
             e.printStackTrace();
         }finally {

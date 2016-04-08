@@ -21,4 +21,10 @@ public class DownloadFileTest {
         DownloadFile downloadFile = new DownloadFile();
         downloadFile.downloadFile(url);
     }
+    @Test
+    public void saveToLocalTest(){
+        DownloadFile downloadFile = new DownloadFile();
+        byte[] strs = "123456".getBytes();
+        downloadFile.saveToLocal(strs,"e:\\test\\123\\456\\","111.txt");
+    }
 }
